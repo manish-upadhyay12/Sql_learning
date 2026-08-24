@@ -46,12 +46,11 @@ ON e.dept_id = d.dept_id
 WHERE d.dept_id >20;
 
 --===================== using group by where and write joion ========================
+
 /*
 -- q1 : Find the number of employees in each department.
 
-Expected columns:
-
-dept_name | employee_count
+Expected columns: dept_name | employee_count
 */
 
 SELECT  d.dept_name,
@@ -62,7 +61,7 @@ ON e.dept_id = d.dept_id
 GROUP  BY dept_name;
 
 /*
-Q2 —  Find the total salary paid in each department.
+Q2 —  find the total salary paid in each department.
 
 Expected:
 
