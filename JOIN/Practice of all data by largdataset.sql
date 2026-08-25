@@ -226,3 +226,29 @@ ORDER BY price asc LIMIT 1;
 --Find the average product price.
 SELECT ROUND(AVG(price),3) AS average_price
 FROM  product;
+
+--======= Group by ========
+/*
+Q1. Category-wise kitne products hain?
+
+Expected thinking: product
+				category_id
+				COUNT()
+*/
+SELECT category_Id,
+	   count(*)
+FROM product
+GROUP BY category_Id
+ORDER BY category_id asc;
+
+--Q2. Supplier-wise kitne products supply kiye gaye hain?
+/*
+Output mein:
+
+supplier_id
+SELECT supplier_id,
+	   count(*)
+FROM product
+GROUP BY supplier_id
+ORDER  by supplier_id ASC;
+number of products*/
