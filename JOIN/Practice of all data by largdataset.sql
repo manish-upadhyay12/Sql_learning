@@ -229,7 +229,7 @@ FROM  product;
 
 --======= Group by ========
 /*
-Q1. Category-wise kitne products hain?
+Q. Category-wise kitne products hain?
 
 Expected thinking: product
 				category_id
@@ -241,14 +241,111 @@ FROM product
 GROUP BY category_Id
 ORDER BY category_id asc;
 
---Q2. Supplier-wise kitne products supply kiye gaye hain?
+--Q. Supplier-wise kitne products supply kiye gaye hain?
 /*
 Output mein:
 
 supplier_id
+*/
 SELECT supplier_id,
 	   count(*)
 FROM product
 GROUP BY supplier_id
 ORDER  by supplier_id ASC;
-number of products*/
+
+
+/*
+🔥 Q. Supplier Performance Analysis
+
+Management wants to identify suppliers who are supplying more than 1 product and whose 
+average
+product price is greater than ₹2,000.
+
+Task: Display:
+
+supplier_id
+supplier_name
+Number of products supplied
+Average product price
+
+Conditions:     Join suppliers and product
+				Group by supplier
+				Only include suppliers having more than 1 product
+				Average price must be greater than ₹2,000
+				Sort by average price descending
+*/
+SELECT s.supplier_id,
+	   s.supplier_name,
+	   COUNT(p.product_name) AS NO_OF_PRODUCT,
+	   ROUND(AVG(p.price),2) AS average_price   
+FROM suppliers s
+INNER JOIN product p
+ON p.supplier_id = s.supplier_id
+GROUP BY s.supplier_id,s.supplier_name
+HAVING count(p.product_name)>1   AND AVG(p.price)>2000
+ORDER BY s.supplier_id ASC ;
+
+/*
+🔥 Q. Category Revenue Potential
+
+The company wants to know which product categories have high-value inventory.
+Calculate the total inventory value for each category:  price × stock_quantity
+
+Task: Display:  category_id
+				category_name
+				Number of products
+				Total stock quantity
+				Total inventory value
+
+Conditions:  Join categories and product
+			Group by category
+			Only show categories where:
+			Total stock quantity is greater than 30
+			Total inventory value is greater than ₹50,000
+			Sort by total inventory value descending
+*/
+
+SELECT c.category_id,
+	   c.category_name,
+	   COUNT(p.product_name) AS no_of_product,	   
+	   SUM(p.stock_quantity)AS total_stock_quantity,
+	   SUM(p.price* p.stock_quantity) AS total_inventory_value
+FROM categories c
+INNER JOIN product p
+ON c.category_id = p.category_id
+GROUP BY c.category_id,c.category_name
+HAVING  SUM(p.stock_quantity) >30 AND SUM(p.price* p.stock_quantity)>50000
+ORDER BY SUM(p.price * p.stock_quantity) DESC;
+	   
+/*
+🔥 Q. Customer Order Analysis
+
+The sales team wants to identify customers whose orders have a high average order value.
+
+Task: Display:
+
+customer_name
+Number of orders
+Total amount spent
+Average order amount
+
+Conditions:
+
+Only include customers whose:
+Number of orders is at least 1
+Average order amount is greater than ₹3,000
+Only consider orders with status Delivered or Shipped
+Sort by total amount spent descending
+
+💡 This one will make you think carefully about WHERE vs HAVING*/
+SELECT 
+    o.customer_name,
+    COUNT(*) AS no_of_orders,
+    SUM(o.total_amount) AS total_amount_spent,
+    AVG(o.total_amount) AS average_order_amount
+FROM orders_data o
+WHERE o.order_status IN ('Delivered', 'Shipped')
+GROUP BY o.customer_name
+HAVING COUNT(*) >= 1
+   AND AVG(o.total_amount) > 3000
+ORDER BY SUM(o.total_amount) DESC;
