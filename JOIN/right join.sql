@@ -112,7 +112,7 @@ RIGHT JOIN departments d
 ON d.dept_id = e.dept_id
 GROUP BY d.dept_name
 HAVING count(emp_id)>1;
-
+ 
 
 
 
