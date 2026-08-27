@@ -108,7 +108,10 @@ sELECT *FROM user_data ORDER BY user_id ASC;
 update user_data
 set name = 'ram'
 where user_id IN (2,4);
-sELECT *FROM user_data ORDER BY user_id ASC)
+
+sELECT *FROM user_data ORDER BY user_id ASC
+
+--q: update user age according to condition 
 UPDATE user_data
 SET age = 
 	CASE
@@ -117,6 +120,8 @@ SET age =
 	end;
 	sELECT *FROM user_data ORDER BY user_id ASC;
 
+
+--q update name 
 update user_data
 set name = 
 case 
